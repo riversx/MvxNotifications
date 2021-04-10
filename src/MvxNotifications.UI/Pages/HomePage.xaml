@@ -7,10 +7,11 @@
     xmlns:local="clr-namespace:MvxNotifications.UI.Pages"
     x:Class="MvxNotifications.UI.Pages.HomePage"
     xmlns:viewModels="clr-namespace:MvxNotifications.Core.ViewModels.Home;assembly=MvxNotifications.Core"
-                      Title="Main page">
+    Title="Main page">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome!!&#10;App scaffolded with MvxScaffolding"
+            <Label
+                Text="Welcome!!&#10;App scaffolded with MvxScaffolding and Notifications"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
         </StackLayout>
