@@ -9,11 +9,64 @@
     xmlns:viewModels="clr-namespace:MvxNotifications.Core.ViewModels.Home;assembly=MvxNotifications.Core"
     Title="{Binding Title}">
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout
+             Margin="5"
+             Padding="10">
+
             <Label
                 Text="{Binding WelcomeMessage}"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+                FontSize="Medium"
+                HorizontalTextAlignment="Center"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="Start" />
+
+            <Button
+                Text="Instant Notification"
+                CornerRadius="10"
+                BackgroundColor="NavajoWhite"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="Start"
+                Command="{Binding SendNotificationCommand}" />
+
+            <Button
+                Text="Scheduled Notification"
+                CornerRadius="10"
+                BackgroundColor="NavajoWhite"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="Start"
+                Command="{Binding SendScheduledNotificationCommand}" />
+            
+            <Label
+                Text="Messages"
+                FontAttributes="Bold"
+                FontSize="Default"
+                TextColor="Red"
+                HorizontalOptions="Center"
+                VerticalOptions="Start" />
+
+            <ScrollView
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand">
+                <StackLayout
+                    Padding="5"
+                    BindableLayout.ItemsSource="{Binding NotificationsList}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Frame
+                                HasShadow="False"
+                                Padding="10"
+                                CornerRadius="5"
+                                BorderColor="LightGray"
+                                BackgroundColor="White">
+                                <Label
+                                    Text="{Binding .}"
+                                    FontSize="Small"/>
+                            </Frame>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
+            </ScrollView>
+
         </StackLayout>
     </ContentPage.Content>
 </views:MvxContentPage>
