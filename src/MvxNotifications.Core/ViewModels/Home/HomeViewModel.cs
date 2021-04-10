@@ -3,18 +3,24 @@ using System.Collections.Generic;
 using System.Text;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
+using MvxNotifications.Core.Services;
 
 namespace MvxNotifications.Core.ViewModels.Home
 {
     public class HomeViewModel : BaseViewModel
     {
-        public HomeViewModel()
+        private INotificationService _notificationService { get; }
+
+        public HomeViewModel(INotificationService notificationService)
         {
-            SendNotificationCommand = new MvxCommand(OnSendNotificationCommand);
+            _notificationService = notificationService;
+
+            SendInstantNotificationCommand = new MvxCommand(OnSendInstantNotificationCommand);
             SendScheduledNotificationCommand = new MvxCommand(OnSendScheduledNotificationCommand);
         }
 
         private int _notificationNumber = 0;
+
 
         #region properties
 
@@ -41,21 +47,37 @@ namespace MvxNotifications.Core.ViewModels.Home
 
         #endregion properties
 
+
         #region commands
 
-        public IMvxCommand SendNotificationCommand { get; }
-        private void OnSendNotificationCommand()
+        public IMvxCommand SendInstantNotificationCommand { get; }
+        private void OnSendInstantNotificationCommand()
         {
             _notificationNumber++;
-            NotificationsList.Add($"Immediate Notification {_notificationNumber}");
-            // Send Immediate message
+            var notificationInfo = new NotificationInfo
+            {
+                Id = _notificationNumber,
+                Title = $"Instant Notification #{_notificationNumber}",
+                SubTitle = "",
+                Message = $"You have now received {_notificationNumber} notifications!"
+            };
+            _notificationService.SendNotification(notificationInfo);
+            // NotificationsList.Add($"Immediate Notification {_notificationNumber}");
         }
 
         public IMvxCommand SendScheduledNotificationCommand { get; }
         private void OnSendScheduledNotificationCommand()
         {
             _notificationNumber++;
-            NotificationsList.Add($"Scheduled Notification {_notificationNumber}");
+            var notificationInfo = new NotificationInfo
+            {
+                Id = _notificationNumber,
+                Title = $"Scheduled Notification #{_notificationNumber}",
+                SubTitle = "",
+                Message = $"You have now received {_notificationNumber} notifications!"
+            };
+            _notificationService.SendNotification(notificationInfo, DateTime.Now.AddSeconds(10));
+            // NotificationsList.Add($"Scheduled Notification {_notificationNumber}");
         }
 
         #endregion commands 

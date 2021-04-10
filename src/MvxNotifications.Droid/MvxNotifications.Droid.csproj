@@ -75,6 +75,7 @@
     <Compile Include="Views\SplashActivity.cs" />
     <Compile Include="Services\AlarmHandler.cs" />
     <Compile Include="Services\AndroidNotificationService.cs" />
+    <Compile Include="Services\IntentBaseNotificationExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProguardConfiguration Include="proguard.cfg" />

@@ -93,6 +93,7 @@
     </ImageAsset>
     <Compile Include="Services\iOSNotificationReceiver.cs" />
     <Compile Include="Services\iOSNotificationService.cs" />
+    <Compile Include="Services\UNMutableNotificationContentExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard">

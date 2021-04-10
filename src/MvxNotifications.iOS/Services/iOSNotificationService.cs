@@ -12,18 +12,12 @@ namespace MvxNotifications.iOS.Services
     {
         private int _messageId = 0;
         private bool _hasNotificationsPermission;
-        public event EventHandler NotificationReceived;
-        public event EventHandler<int> ShowNotification;
+        //public event EventHandler NotificationReceived;
+        //public event EventHandler<int> ShowNotification;
 
         public IOSNotificationService()
         {
-            Initialize();
-        }
-
-        public void Initialize()
-        {
             // UIApplication.SharedApplication.ApplicationIconBadgeNumber = 0;
-
             if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
             {
                 // iOS 10 or later
@@ -37,7 +31,7 @@ namespace MvxNotifications.iOS.Services
                 });
 
                 // For iOS 10 display notification (sent via APNS)
-                UNUserNotificationCenter.Current.Delegate = new iOSNotificationReceiver();
+                UNUserNotificationCenter.Current.Delegate = new IOSNotificationReceiver();
 
                 // For iOS 10 data message (sent via FCM)
                 //Messaging.SharedInstance.RemoteMessageDelegate = this;
@@ -54,7 +48,7 @@ namespace MvxNotifications.iOS.Services
             }
         }
 
-        public void SendNotification(string title, string message, DateTime? notifyTime = null)
+        public void SendNotification(NotificationInfo notificationInfo, DateTime? notifyTime = null)
         {
             // EARLY OUT: app doesn't have permissions
             if (!_hasNotificationsPermission)
@@ -64,13 +58,8 @@ namespace MvxNotifications.iOS.Services
 
             _messageId++;
 
-            var content = new UNMutableNotificationContent()
-            {
-                Title = title,
-                Subtitle = "",
-                Body = message,
-                UserInfo = new NSDictionary(new NSString("id"), new NSNumber(_messageId))
-            };
+            var content = new UNMutableNotificationContent();
+            content.SetNotificationInfo(notificationInfo);
 
             UNNotificationTrigger trigger;
             if (notifyTime != null)
@@ -94,16 +83,16 @@ namespace MvxNotifications.iOS.Services
             });
         }
 
-        public void ReceiveNotification(string title, string message, int id)
-        {
-            var args = new NotificationEventArgs()
-            {
-                Title = title,
-                Message = message,
-                Id = id
-            };
-            NotificationReceived?.Invoke(null, args);
-        }
+        //public void ReceiveNotification(string title, string message, int id)
+        //{
+        //    var args = new NotificationEventArgs()
+        //    {
+        //        Title = title,
+        //        Message = message,
+        //        Id = id
+        //    };
+        //    NotificationReceived?.Invoke(null, args);
+        //}
 
         private NSDateComponents GetNSDateComponents(DateTime dateTime)
         {
@@ -118,9 +107,9 @@ namespace MvxNotifications.iOS.Services
             };
         }
 
-        public void OpenNotification(int id)
-        {
-            ShowNotification?.Invoke(this, id);
-        }
+        //public void OpenNotification(int id)
+        //{
+        //    ShowNotification?.Invoke(this, id);
+        //}
     }
 }

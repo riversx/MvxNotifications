@@ -42,10 +42,8 @@ namespace MvxNotifications.Droid
         {
             if (intent.IsNotification())
             {
-                var title = intent.GetStringExtra(AndroidNotificationService.TitleKey);
-                var message = intent.GetStringExtra(AndroidNotificationService.MessageKey);
-                var id = intent.GetIntExtra(AndroidNotificationService.IdKey, 0);
-                Mvx.IoCProvider.GetSingleton<INotificationService>().OpenNotification(id);
+                NotificationInfo notificationInfo = intent.GetNotificationInfo();
+                // Mvx.IoCProvider.GetSingleton<INotificationService>().OpenNotification(notificationInfo);
             }
         }
     }

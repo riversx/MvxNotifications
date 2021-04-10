@@ -1,4 +1,5 @@
 ﻿using Android.Content;
+using MvxNotifications.Core.Services;
 using Xamarin.Forms;
 
 namespace MvxNotifications.Droid.Services
@@ -8,14 +9,11 @@ namespace MvxNotifications.Droid.Services
     {
         public override void OnReceive(Context context, Intent intent)
         {
-            if (intent?.Extras != null)
+            if (intent.IsNotification())
             {
-                var title = intent.GetStringExtra(AndroidNotificationService.TitleKey);
-                var message = intent.GetStringExtra(AndroidNotificationService.MessageKey);
-                var id = intent.GetIntExtra(AndroidNotificationService.IdKey, 0);
-
+                NotificationInfo notificationInfo = intent.GetNotificationInfo();
                 AndroidNotificationService manager = AndroidNotificationService.Instance ?? new AndroidNotificationService();
-                manager.ProcessNotification(title, message, id);
+                manager.ProcessNotification(notificationInfo);
             }
         }
     }

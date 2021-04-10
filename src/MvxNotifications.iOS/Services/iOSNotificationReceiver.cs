@@ -8,7 +8,7 @@ using MvxNotifications.Core.Services;
 
 namespace MvxNotifications.iOS.Services
 {
-    public class iOSNotificationReceiver : UNUserNotificationCenterDelegate
+    public class IOSNotificationReceiver : UNUserNotificationCenterDelegate
     {
         public override void WillPresentNotification(
             UNUserNotificationCenter center,
@@ -19,14 +19,10 @@ namespace MvxNotifications.iOS.Services
             completionHandler(UNNotificationPresentationOptions.Alert);
         }
 
-        void ProcessNotification(UNNotification notification)
+        private void ProcessNotification(UNNotification notification)
         {
-            string title = notification.Request.Content.Title;
-            string message = notification.Request.Content.Body;
-            var info = notification.Request.Content.UserInfo;
-            var id = (NSNumber)info.ValueForKey((NSString)"id");
-
-            Mvx.IoCProvider.GetSingleton<INotificationService>().ReceiveNotification(title, message, id.Int32Value);
+            NotificationInfo notificationInfo = notification.GetNotificationInfo();
+            // Mvx.IoCProvider.GetSingleton<INotificationService>().ReceiveNotification(notificationInfo);
         }
 
         public override void DidReceiveNotificationResponse(
@@ -37,9 +33,8 @@ namespace MvxNotifications.iOS.Services
             switch (response.ActionIdentifier)
             {
                 case "com.apple.UNNotificationDefaultActionIdentifier":
-                    var info = response.Notification.Request.Content.UserInfo;
-                    var id = (NSNumber)info.ValueForKey((NSString)"id");
-                    Mvx.IoCProvider.GetSingleton<INotificationService>().OpenNotification(id.Int32Value);
+                    NotificationInfo notificationInfo = response.Notification.GetNotificationInfo();
+                    // Mvx.IoCProvider.GetSingleton<INotificationService>().OpenNotification(notificationInfo);
                     break;
                 default:
                     break;
