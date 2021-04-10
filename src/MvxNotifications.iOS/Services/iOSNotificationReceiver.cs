@@ -22,7 +22,7 @@ namespace MvxNotifications.iOS.Services
         private void ProcessNotification(UNNotification notification)
         {
             NotificationInfo notificationInfo = notification.GetNotificationInfo();
-            // Mvx.IoCProvider.GetSingleton<INotificationService>().ReceiveNotification(notificationInfo);
+            Mvx.IoCProvider.GetSingleton<INotificationService>().NotificationReceived(notificationInfo);
         }
 
         public override void DidReceiveNotificationResponse(
@@ -34,7 +34,7 @@ namespace MvxNotifications.iOS.Services
             {
                 case "com.apple.UNNotificationDefaultActionIdentifier":
                     NotificationInfo notificationInfo = response.Notification.GetNotificationInfo();
-                    // Mvx.IoCProvider.GetSingleton<INotificationService>().OpenNotification(notificationInfo);
+                    Mvx.IoCProvider.GetSingleton<INotificationService>().NotificationOpened(notificationInfo);
                     break;
                 default:
                     break;

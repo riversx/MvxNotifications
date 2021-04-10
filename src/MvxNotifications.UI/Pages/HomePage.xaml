@@ -22,7 +22,8 @@
 
             <Button
                 Text="Instant Notification"
-                CornerRadius="10"
+                Margin="5"
+                CornerRadius="5"
                 BackgroundColor="NavajoWhite"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="Start"
@@ -30,7 +31,8 @@
 
             <Button
                 Text="Scheduled Notification"
-                CornerRadius="10"
+                Margin="5"
+                CornerRadius="5"
                 BackgroundColor="NavajoWhite"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="Start"
@@ -58,9 +60,28 @@
                                 CornerRadius="5"
                                 BorderColor="LightGray"
                                 BackgroundColor="White">
-                                <Label
-                                    Text="{Binding .}"
-                                    FontSize="Small"/>
+                                <StackLayout
+                                    Margin="0"
+                                    Padding="0"
+                                    Orientation="Vertical">
+                                    <Label
+                                        Margin="0"
+                                        Padding="0"
+                                        Text="{Binding Title}"
+                                        FontAttributes="Bold"
+                                        FontSize="Small"/>
+                                    <Label
+                                        Margin="0,-5,0,0"
+                                        Padding="0"
+                                        Text="{Binding SubTitle}"
+                                        FontAttributes="Italic"
+                                        FontSize="Small"/>
+                                    <Label
+                                        Margin="0,-5,0,0"
+                                        Padding="0"
+                                        Text="{Binding Message}"
+                                        FontSize="Small"/>
+                                </StackLayout>
                             </Frame>
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>

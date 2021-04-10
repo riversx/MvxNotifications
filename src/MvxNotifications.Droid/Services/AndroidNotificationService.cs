@@ -18,12 +18,8 @@ namespace MvxNotifications.Droid.Services
         private const string channelDescription = "The default channel for notifications.";
 
         private bool channelInitialized = false;
-        private int messageId = 0;
         private int pendingIntentId = 0;
         private NotificationManager manager;
-
-        //public event EventHandler NotificationReceived;
-        //public event EventHandler<int> ShowNotification;
 
         public static AndroidNotificationService Instance { get; private set; }
 
@@ -53,14 +49,15 @@ namespace MvxNotifications.Droid.Services
             channelInitialized = true;
         }
 
-        public void SendNotification(NotificationInfo notificationInfo, DateTime? notifyTime = null)
+        #region publisher
+
+        public void Publish(NotificationInfo notificationInfo, DateTime? notifyTime = null)
         {
             if (!channelInitialized)
             {
                 CreateNotificationChannel();
             }
 
-            messageId++;
             if (notifyTime != null)
             {
                 var intent = new Intent(AndroidApp.Context, typeof(AlarmHandler));
@@ -76,17 +73,6 @@ namespace MvxNotifications.Droid.Services
                 ProcessNotification(notificationInfo);
             }
         }
-
-        //public void ReceiveNotification(string title, string message, int id)
-        //{
-        //    var args = new NotificationEventArgs()
-        //    {
-        //        Title = title,
-        //        Message = message,
-        //        Id = id
-        //    };
-        //    NotificationReceived?.Invoke(null, args);
-        //}
 
         public void ProcessNotification(NotificationInfo notificationInfo)
         {
@@ -107,7 +93,7 @@ namespace MvxNotifications.Droid.Services
             Notification notification = builder.Build();
             manager.Notify(notificationInfo.Id, notification);
 
-            // ReceiveNotification(title, message, id);
+            NotificationReceived(notificationInfo);
         }
 
         private long GetNotifyTime(DateTime notifyTime)
@@ -118,10 +104,26 @@ namespace MvxNotifications.Droid.Services
             return utcAlarmTime; // milliseconds
         }
 
-        //public void OpenNotification(int id)
-        //{
-        //    manager.Cancel(id);
-        //    ShowNotification?.Invoke(this, id);
-        //}
+        #endregion publisher 
+
+
+
+        #region listener
+
+        public event EventHandler<NotificationInfo> OnNotificationReceived;
+        public event EventHandler<NotificationInfo> OnNotificationOpened;
+
+        public void NotificationReceived(NotificationInfo notificationInfo)
+        {
+            OnNotificationReceived?.Invoke(null, notificationInfo);
+        }
+
+        public void NotificationOpened(NotificationInfo notificationInfo)
+        {
+            manager.Cancel(notificationInfo.Id);
+            OnNotificationOpened?.Invoke(this, notificationInfo);
+        }
+
+        #endregion listener
     }
 }

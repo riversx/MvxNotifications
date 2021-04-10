@@ -12,8 +12,6 @@ namespace MvxNotifications.iOS.Services
     {
         private int _messageId = 0;
         private bool _hasNotificationsPermission;
-        //public event EventHandler NotificationReceived;
-        //public event EventHandler<int> ShowNotification;
 
         public IOSNotificationService()
         {
@@ -48,7 +46,10 @@ namespace MvxNotifications.iOS.Services
             }
         }
 
-        public void SendNotification(NotificationInfo notificationInfo, DateTime? notifyTime = null)
+
+        #region publisher
+
+        public void Publish(NotificationInfo notificationInfo, DateTime? notifyTime = null)
         {
             // EARLY OUT: app doesn't have permissions
             if (!_hasNotificationsPermission)
@@ -83,17 +84,6 @@ namespace MvxNotifications.iOS.Services
             });
         }
 
-        //public void ReceiveNotification(string title, string message, int id)
-        //{
-        //    var args = new NotificationEventArgs()
-        //    {
-        //        Title = title,
-        //        Message = message,
-        //        Id = id
-        //    };
-        //    NotificationReceived?.Invoke(null, args);
-        //}
-
         private NSDateComponents GetNSDateComponents(DateTime dateTime)
         {
             return new NSDateComponents
@@ -107,9 +97,25 @@ namespace MvxNotifications.iOS.Services
             };
         }
 
-        //public void OpenNotification(int id)
-        //{
-        //    ShowNotification?.Invoke(this, id);
-        //}
+        #endregion publisher
+
+
+
+        #region listener
+
+        public event EventHandler<NotificationInfo> OnNotificationReceived;
+        public event EventHandler<NotificationInfo> OnNotificationOpened;
+
+        public void NotificationReceived(NotificationInfo notificationInfo)
+        {
+            OnNotificationReceived?.Invoke(null, notificationInfo);
+        }
+
+        public void NotificationOpened(NotificationInfo notificationInfo)
+        {
+            OnNotificationOpened?.Invoke(this, notificationInfo);
+        }
+
+        #endregion listener
     }
 }

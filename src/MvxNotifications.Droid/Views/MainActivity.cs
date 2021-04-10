@@ -27,14 +27,12 @@ namespace MvxNotifications.Droid
         {
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
-
             base.OnCreate(bundle);
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
@@ -43,7 +41,7 @@ namespace MvxNotifications.Droid
             if (intent.IsNotification())
             {
                 NotificationInfo notificationInfo = intent.GetNotificationInfo();
-                // Mvx.IoCProvider.GetSingleton<INotificationService>().OpenNotification(notificationInfo);
+                Mvx.IoCProvider.GetSingleton<INotificationService>().NotificationOpened(notificationInfo);
             }
         }
     }

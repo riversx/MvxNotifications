@@ -14,6 +14,8 @@ namespace MvxNotifications.Core.ViewModels.Home
         public HomeViewModel(INotificationService notificationService)
         {
             _notificationService = notificationService;
+            _notificationService.OnNotificationReceived += NotificationService_OnNotificationReceived;
+            _notificationService.OnNotificationOpened += NotificationService_OnNotificationOpened;
 
             SendInstantNotificationCommand = new MvxCommand(OnSendInstantNotificationCommand);
             SendScheduledNotificationCommand = new MvxCommand(OnSendScheduledNotificationCommand);
@@ -38,8 +40,8 @@ namespace MvxNotifications.Core.ViewModels.Home
             set => SetProperty(ref _welcomeMessage, value);
         }
 
-        private MvxObservableCollection<string> _notificationsList = new MvxObservableCollection<string>();
-        public MvxObservableCollection<string> NotificationsList
+        private MvxObservableCollection<NotificationInfo> _notificationsList = new MvxObservableCollection<NotificationInfo>();
+        public MvxObservableCollection<NotificationInfo> NotificationsList
         {
             get => _notificationsList;
             set => SetProperty(ref _notificationsList, value);
@@ -57,12 +59,11 @@ namespace MvxNotifications.Core.ViewModels.Home
             var notificationInfo = new NotificationInfo
             {
                 Id = _notificationNumber,
-                Title = $"Instant Notification #{_notificationNumber}",
-                SubTitle = "",
+                Title = $"Notification #{_notificationNumber}",
+                SubTitle = "Instant",
                 Message = $"You have now received {_notificationNumber} notifications!"
             };
-            _notificationService.SendNotification(notificationInfo);
-            // NotificationsList.Add($"Immediate Notification {_notificationNumber}");
+            _notificationService.Publish(notificationInfo);
         }
 
         public IMvxCommand SendScheduledNotificationCommand { get; }
@@ -72,14 +73,29 @@ namespace MvxNotifications.Core.ViewModels.Home
             var notificationInfo = new NotificationInfo
             {
                 Id = _notificationNumber,
-                Title = $"Scheduled Notification #{_notificationNumber}",
-                SubTitle = "",
+                Title = $"Notification #{_notificationNumber}",
+                SubTitle = "Scheduled",
                 Message = $"You have now received {_notificationNumber} notifications!"
             };
-            _notificationService.SendNotification(notificationInfo, DateTime.Now.AddSeconds(10));
-            // NotificationsList.Add($"Scheduled Notification {_notificationNumber}");
+            _notificationService.Publish(notificationInfo, DateTime.Now.AddSeconds(10));
         }
 
-        #endregion commands 
+        #endregion commands
+
+
+
+        #region events
+
+        private void NotificationService_OnNotificationReceived(object sender, NotificationInfo e)
+        {
+             NotificationsList.Add(e);
+        }
+
+        private void NotificationService_OnNotificationOpened(object sender, NotificationInfo e)
+        {
+            //  throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }
