@@ -4,8 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:views="clr-namespace:MvvmCross.Forms.Views;assembly=MvvmCross.Forms"
     xmlns:mvx="clr-namespace:MvvmCross.Forms.Bindings;assembly=MvvmCross.Forms"
-    xmlns:local="clr-namespace:MvxNotifications.UI.Pages"
-    x:Class="MvxNotifications.UI.Pages.HomePage"
+    xmlns:local="clr-namespace:MvxNotifications.UI.Pages.Home"
+    x:Class="MvxNotifications.UI.Pages.Home.HomePage"
     xmlns:viewModels="clr-namespace:MvxNotifications.Core.ViewModels.Home;assembly=MvxNotifications.Core"
     Title="{Binding Title}">
     <ContentPage.Content>

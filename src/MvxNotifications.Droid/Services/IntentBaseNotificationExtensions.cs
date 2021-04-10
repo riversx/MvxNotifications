@@ -18,6 +18,7 @@ namespace MvxNotifications.Droid.Services
             intent.PutExtra(NotificationSubTitleKey, notificationInfo.SubTitle);
             intent.PutExtra(NotificationMessageKey, notificationInfo.Message);
             intent.PutExtra(NotificationIdKey, notificationInfo.Id);
+            // add here extra info
         }
 
         public static bool IsNotification(this Intent intent)
@@ -32,7 +33,8 @@ namespace MvxNotifications.Droid.Services
                 Title = intent.GetStringExtra(NotificationTitleKey),
                 SubTitle = intent.GetStringExtra(NotificationSubTitleKey),
                 Message = intent.GetStringExtra(NotificationMessageKey),
-                Id = intent.GetIntExtra(NotificationIdKey, 0)
+                Id = intent.GetIntExtra(NotificationIdKey, 0),
+                // read here extra info 
             };
         }
     }

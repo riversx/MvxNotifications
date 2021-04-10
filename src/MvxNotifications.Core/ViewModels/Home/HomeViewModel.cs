@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
 using MvxNotifications.Core.Services;
@@ -26,7 +24,7 @@ namespace MvxNotifications.Core.ViewModels.Home
 
         #region properties
 
-        private string _title ="Mvx Notifications";
+        private string _title = "Mvx Notifications";
         public string Title
         {
             get => _title;
@@ -70,11 +68,12 @@ namespace MvxNotifications.Core.ViewModels.Home
         private void OnSendScheduledNotificationCommand()
         {
             _notificationNumber++;
+            DateTime instant = DateTime.Now.AddSeconds(10);
             var notificationInfo = new NotificationInfo
             {
                 Id = _notificationNumber,
                 Title = $"Notification #{_notificationNumber}",
-                SubTitle = "Scheduled",
+                SubTitle = $"Scheduled at {instant.ToString("dd/MM/yy HH:mm:ss")}",
                 Message = $"You have now received {_notificationNumber} notifications!"
             };
             _notificationService.Publish(notificationInfo, DateTime.Now.AddSeconds(10));
@@ -88,14 +87,19 @@ namespace MvxNotifications.Core.ViewModels.Home
 
         private void NotificationService_OnNotificationReceived(object sender, NotificationInfo e)
         {
-             NotificationsList.Add(e);
+            NotificationsList.Add(e);
         }
 
         private void NotificationService_OnNotificationOpened(object sender, NotificationInfo e)
         {
-            //  throw new NotImplementedException();
+            DisplayAlert?.Invoke(sender, new DisplayAlertEventArgs
+            {
+                Title = e.Title,
+                Message = $"{e.SubTitle}\n{e.Message}",
+                AcceptText = "OK"
+            });
         }
 
-        #endregion
+        #endregion events 
     }
 }
