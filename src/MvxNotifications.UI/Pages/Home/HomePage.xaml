@@ -64,12 +64,62 @@
                                     Margin="0"
                                     Padding="0"
                                     Orientation="Vertical">
-                                    <Label
-                                        Margin="0"
-                                        Padding="0"
-                                        Text="{Binding Title}"
-                                        FontAttributes="Bold"
-                                        FontSize="Small"/>
+                                    
+                                    <StackLayout
+                                        Orientation="Horizontal"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="Start">
+                                        <Image
+                                            IsVisible="{Binding IsUnread}"
+                                            HorizontalOptions="Start"
+                                            VerticalOptions="CenterAndExpand">
+                                            <Image.Source>
+                                                <FontImageSource
+                                                    Color="Black"
+                                                    FontFamily="MaterialDesignIcons"
+                                                    Glyph="{Binding EnvelopeClosedIconCode}"
+                                                    Size="Default" />
+                                            </Image.Source>
+                                        </Image>
+                                        <Image
+                                            IsVisible="{Binding IsRead}"
+                                            HorizontalOptions="Start"
+                                            VerticalOptions="CenterAndExpand">
+                                            <Image.Source>
+                                                <FontImageSource
+                                                    Color="DarkGray"
+                                                    FontFamily="MaterialDesignIcons"
+                                                    Glyph="{Binding EnvelopeOpenedIconCode}"
+                                                    Size="Default" />
+                                            </Image.Source>
+                                        </Image>
+                                        <Label
+                                            Margin="0"
+                                            Padding="0"
+                                            Text="{Binding Title}"
+                                            FontAttributes="Bold"
+                                            FontSize="Small"
+                                            HorizontalOptions="FillAndExpand"
+                                            VerticalOptions="CenterAndExpand"/>
+                                        <Image
+                                            IsVisible="{Binding IsRead}"
+                                            HorizontalOptions="End"
+                                            VerticalOptions="CenterAndExpand">
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer
+                                                    Command="{Binding DeleteNotificationCommand, Mode=TwoWay}"
+                                                    CommandParameter="{Binding .}">
+                                                </TapGestureRecognizer>
+                                            </Image.GestureRecognizers>
+                                            <Image.Source>
+                                                <FontImageSource
+                                                    Color="DarkRed"
+                                                    FontFamily="MaterialDesignIcons"
+                                                    Glyph="{Binding DeleteIconCode}"
+                                                    Size="Default" />
+                                            </Image.Source>
+                                        </Image>
+                                    </StackLayout>
                                     <Label
                                         Margin="0,-5,0,0"
                                         Padding="0"

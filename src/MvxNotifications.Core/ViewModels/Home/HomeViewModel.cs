@@ -19,6 +19,7 @@ namespace MvxNotifications.Core.ViewModels.Home
 
             SendInstantNotificationCommand = new MvxCommand(OnSendInstantNotificationCommand);
             SendScheduledNotificationCommand = new MvxCommand(OnSendScheduledNotificationCommand);
+            DeleteNotificationCommand = new MvxCommand<NotificationInfoViewModel>(OnDeleteNotificationCommand);
         }
 
         private int _notificationNumber = 0;
@@ -81,27 +82,8 @@ namespace MvxNotifications.Core.ViewModels.Home
             _notificationService.Publish(notificationInfo, DateTime.Now.AddSeconds(10));
         }
 
-        #endregion commands
-
-
-        #region interactions
-
-
-        private MvxInteraction<YesNoQuestion> _requestDeleteInteraction = new MvxInteraction<YesNoQuestion>();
-        public IMvxInteraction<YesNoQuestion> RequestDeleteInteraction => _requestDeleteInteraction;
-
-
-        #endregion interactions
-
-
-        #region events
-
-        private void NotificationService_OnNotificationReceived(object sender, NotificationInfo e)
-        {
-            NotificationsList.Add(e.ToViewModel());
-        }
-
-        private void NotificationService_OnNotificationOpened(object sender, NotificationInfo e)
+        public IMvxCommand<NotificationInfoViewModel> DeleteNotificationCommand { get; }
+        private void OnDeleteNotificationCommand(NotificationInfoViewModel e)
         {
             var request = new YesNoQuestion
             {
@@ -115,16 +97,48 @@ namespace MvxNotifications.Core.ViewModels.Home
                         await Task.Delay(100);
                     }
                 },
+                Title = "Delete notification",
                 Question = "Do you want to remove this notification from list?"
             };
             _requestDeleteInteraction.Raise(request);
+        }
 
-            //DisplayAlert?.Invoke(sender, new DisplayAlertEventArgs
-            //{
-            //    Title = e.Title,
-            //    Message = $"{e.SubTitle}\n{e.Message}",
-            //    AcceptText = "OK"
-            //});
+        #endregion commands
+
+
+        #region interactions
+
+        private MvxInteraction<YesNoQuestion> _requestDeleteInteraction = new MvxInteraction<YesNoQuestion>();
+        public IMvxInteraction<YesNoQuestion> RequestDeleteInteraction => _requestDeleteInteraction;
+
+        private MvxInteraction<AlertMessage> _requestOpenInteraction = new MvxInteraction<AlertMessage>();
+        public IMvxInteraction<AlertMessage> RequestOpenInteraction => _requestOpenInteraction;
+
+        #endregion interactions
+
+
+        #region events
+
+        private void NotificationService_OnNotificationReceived(object sender, NotificationInfo e)
+        {
+            NotificationInfoViewModel viewModel = e.ToViewModel(DeleteNotificationCommand);
+            NotificationsList.Add(viewModel);
+        }
+
+        private void NotificationService_OnNotificationOpened(object sender, NotificationInfo e)
+        {
+            var request = new AlertMessage
+            {
+                Title = e.Title,
+                Message =  $"{e.SubTitle}\n{e.Message}",
+                AcceptText = "OK",
+                OkCallback = () =>
+                {
+                    NotificationInfoViewModel notificatioOpened = NotificationsList.FirstOrDefault(n => n.Id.Equals(e.Id));
+                    notificatioOpened.IsRead = true;
+                }
+            };
+            _requestOpenInteraction.Raise(request);
         }
 
         #endregion events 

@@ -1,10 +1,18 @@
-﻿using MvvmCross.ViewModels;
+﻿using System.Threading.Tasks;
+using MvvmCross.Commands;
+using MvvmCross.ViewModels;
 using MvxNotifications.Core.Services;
 
 namespace MvxNotifications.Core.ViewModels.Home
 {
     public class NotificationInfoViewModel: MvxViewModel
     {
+        public IMvxCommand<NotificationInfoViewModel> DeleteNotificationCommand { get; set; }
+
+        public string EnvelopeClosedIconCode => Resources.Fonts.MaterialDesignIconsCodes.EmailOutline;
+        public string EnvelopeOpenedIconCode => Resources.Fonts.MaterialDesignIconsCodes.EmailOpenOutline;
+        public string DeleteIconCode => Resources.Fonts.MaterialDesignIconsCodes.TrashCanOutline;
+
         public int Id { get; set; }
         public string Title { get; set; }
         public string SubTitle { get; set; }
@@ -24,7 +32,7 @@ namespace MvxNotifications.Core.ViewModels.Home
 
     public static class NotificationInfoExtensions
     {
-        public static NotificationInfoViewModel ToViewModel(this NotificationInfo info, bool isRead = false)
+        public static NotificationInfoViewModel ToViewModel(this NotificationInfo info, IMvxCommand<NotificationInfoViewModel> deleteNotificationCommand,  bool isRead = false)
         {
             return new NotificationInfoViewModel
             {
@@ -32,7 +40,8 @@ namespace MvxNotifications.Core.ViewModels.Home
                 Title = info.Title,
                 SubTitle = info.SubTitle,
                 Message = info.Message,
-                IsRead = isRead
+                IsRead = isRead,
+                DeleteNotificationCommand = deleteNotificationCommand
             };
         }
     }

@@ -27,6 +27,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Fonts\materialdesignicons-webfont.ttf" />
+  </ItemGroup>
+  <ItemGroup>
     <None Update="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
@@ -37,5 +40,9 @@
 
   <ItemGroup>
     <Folder Include="Pages\Home\" />
+    <Folder Include="Resources\Fonts\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Fonts\materialdesignicons-webfont.ttf" />
   </ItemGroup>
 </Project>

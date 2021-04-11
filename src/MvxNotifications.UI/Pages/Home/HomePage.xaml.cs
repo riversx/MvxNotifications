@@ -27,7 +27,12 @@ namespace MvxNotifications.UI.Pages.Home
             ViewModel.DisplayQuestion += ViewModel_DisplayQuestion;
 
             CreateBindingSet().Bind(this)
-                .For(view => view.Interaction).To(viewModel => viewModel.RequestDeleteInteraction)
+                .For(view => view.DeleteInteraction).To(viewModel => viewModel.RequestDeleteInteraction)
+                .OneWay()
+                .Apply();
+
+            CreateBindingSet().Bind(this)
+                .For(view => view.OpenInteraction).To(viewModel => viewModel.RequestOpenInteraction)
                 .OneWay()
                 .Apply();
         }
@@ -62,28 +67,51 @@ namespace MvxNotifications.UI.Pages.Home
             }
         }
 
+
+
         #region interactions
 
-
-        private IMvxInteraction<YesNoQuestion> _interaction;
-        public IMvxInteraction<YesNoQuestion> Interaction
+        private IMvxInteraction<YesNoQuestion> _deleteInteraction;
+        public IMvxInteraction<YesNoQuestion> DeleteInteraction
         {
-            get => _interaction;
+            get => _deleteInteraction;
             set
             {
-                if (_interaction != null)
-                    _interaction.Requested -= OnInteractionRequested;
+                if (_deleteInteraction != null)
+                    _deleteInteraction.Requested -= OnDisplayQuestionAsync;
 
-                _interaction = value;
-                _interaction.Requested += OnInteractionRequested;
+                _deleteInteraction = value;
+                _deleteInteraction.Requested += OnDisplayQuestionAsync;
             }
         }
 
-        private async void OnInteractionRequested(object sender, MvxValueEventArgs<YesNoQuestion> eventArgs)
+        private async void OnDisplayQuestionAsync(object sender, MvxValueEventArgs<YesNoQuestion> eventArgs)
         {
-            YesNoQuestion yesNoQuestion = eventArgs.Value;
-            var answer = await DisplayAlert("Question", yesNoQuestion.Question, "OK", "Cancel");
-            yesNoQuestion.YesNoCallback(answer);
+            YesNoQuestion question = eventArgs.Value;
+            var answer = await DisplayAlert(question.Title, question.Question, question.AcceptText, question.CancelText);
+            question.YesNoCallback(answer);
+        }
+
+
+        private IMvxInteraction<AlertMessage> _openInteraction;
+        public IMvxInteraction<AlertMessage> OpenInteraction
+        {
+            get => _openInteraction;
+            set
+            {
+                if (_openInteraction != null)
+                    _openInteraction.Requested -= OnDisplayAlertAsync;
+
+                _openInteraction = value;
+                _openInteraction.Requested += OnDisplayAlertAsync;
+            }
+        }
+
+        private async void OnDisplayAlertAsync(object sender, MvxValueEventArgs<AlertMessage> eventArgs)
+        {
+            AlertMessage openInteraction = eventArgs.Value;
+            await DisplayAlert(openInteraction.Title, openInteraction.Message, openInteraction.AcceptText);
+            openInteraction.OkCallback();
         }
 
         #endregion interactions 
