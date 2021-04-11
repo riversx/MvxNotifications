@@ -40,8 +40,8 @@ namespace MvxNotifications.Core.ViewModels.Home
             set => SetProperty(ref _welcomeMessage, value);
         }
 
-        private MvxObservableCollection<NotificationInfo> _notificationsList = new MvxObservableCollection<NotificationInfo>();
-        public MvxObservableCollection<NotificationInfo> NotificationsList
+        private MvxObservableCollection<NotificationInfoViewModel> _notificationsList = new MvxObservableCollection<NotificationInfoViewModel>();
+        public MvxObservableCollection<NotificationInfoViewModel> NotificationsList
         {
             get => _notificationsList;
             set => SetProperty(ref _notificationsList, value);
@@ -98,7 +98,7 @@ namespace MvxNotifications.Core.ViewModels.Home
 
         private void NotificationService_OnNotificationReceived(object sender, NotificationInfo e)
         {
-            NotificationsList.Add(e);
+            NotificationsList.Add(e.ToViewModel());
         }
 
         private void NotificationService_OnNotificationOpened(object sender, NotificationInfo e)
@@ -109,7 +109,7 @@ namespace MvxNotifications.Core.ViewModels.Home
                 {
                     if (ok)
                     {
-                        NotificationInfo notificationToRemove = NotificationsList.FirstOrDefault(n => n.Id.Equals(e.Id));
+                        NotificationInfoViewModel notificationToRemove = NotificationsList.FirstOrDefault(n => n.Id.Equals(e.Id));
                         if (notificationToRemove != null)
                             NotificationsList.Remove(notificationToRemove);
                         await Task.Delay(100);
