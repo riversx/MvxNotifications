@@ -1,7 +1,10 @@
 using System;
+using MvvmCross.Base;
 using MvvmCross.Forms.Presenters.Attributes;
 using MvvmCross.Forms.Views;
+using MvvmCross.ViewModels;
 using MvxNotifications.Core;
+using MvxNotifications.Core.ViewModels;
 using MvxNotifications.Core.ViewModels.Home;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -22,6 +25,11 @@ namespace MvxNotifications.UI.Pages.Home
             base.OnViewModelSet();
             ViewModel.DisplayAlert += ViewModel_DisplayAlert;
             ViewModel.DisplayQuestion += ViewModel_DisplayQuestion;
+
+            CreateBindingSet().Bind(this)
+                .For(view => view.Interaction).To(viewModel => viewModel.RequestDeleteInteraction)
+                .OneWay()
+                .Apply();
         }
 
         public void Dispose()
@@ -53,5 +61,32 @@ namespace MvxNotifications.UI.Pages.Home
                 navigationPage.BarBackgroundColor = (Color)Application.Current.Resources["PrimaryColor"];
             }
         }
+
+        #region interactions
+
+
+        private IMvxInteraction<YesNoQuestion> _interaction;
+        public IMvxInteraction<YesNoQuestion> Interaction
+        {
+            get => _interaction;
+            set
+            {
+                if (_interaction != null)
+                    _interaction.Requested -= OnInteractionRequested;
+
+                _interaction = value;
+                _interaction.Requested += OnInteractionRequested;
+            }
+        }
+
+        private async void OnInteractionRequested(object sender, MvxValueEventArgs<YesNoQuestion> eventArgs)
+        {
+            YesNoQuestion yesNoQuestion = eventArgs.Value;
+            var answer = await DisplayAlert("Question", yesNoQuestion.Question, "OK", "Cancel");
+            yesNoQuestion.YesNoCallback(answer);
+        }
+
+        #endregion interactions 
+
     }
 }

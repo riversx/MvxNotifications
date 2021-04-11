@@ -39,7 +39,7 @@
                 Command="{Binding SendScheduledNotificationCommand}" />
             
             <Label
-                Text="Messages"
+                Text="Notifications"
                 FontAttributes="Bold"
                 FontSize="Default"
                 TextColor="Red"

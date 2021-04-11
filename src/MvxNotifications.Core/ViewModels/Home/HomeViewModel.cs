@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Threading.Tasks;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
 using MvxNotifications.Core.Services;
@@ -82,6 +84,15 @@ namespace MvxNotifications.Core.ViewModels.Home
         #endregion commands
 
 
+        #region interactions
+
+
+        private MvxInteraction<YesNoQuestion> _requestDeleteInteraction = new MvxInteraction<YesNoQuestion>();
+        public IMvxInteraction<YesNoQuestion> RequestDeleteInteraction => _requestDeleteInteraction;
+
+
+        #endregion interactions
+
 
         #region events
 
@@ -92,12 +103,28 @@ namespace MvxNotifications.Core.ViewModels.Home
 
         private void NotificationService_OnNotificationOpened(object sender, NotificationInfo e)
         {
-            DisplayAlert?.Invoke(sender, new DisplayAlertEventArgs
+            var request = new YesNoQuestion
             {
-                Title = e.Title,
-                Message = $"{e.SubTitle}\n{e.Message}",
-                AcceptText = "OK"
-            });
+                YesNoCallback = async (ok) =>
+                {
+                    if (ok)
+                    {
+                        NotificationInfo notificationToRemove = NotificationsList.FirstOrDefault(n => n.Id.Equals(e.Id));
+                        if (notificationToRemove != null)
+                            NotificationsList.Remove(notificationToRemove);
+                        await Task.Delay(100);
+                    }
+                },
+                Question = "Do you want to remove this notification from list?"
+            };
+            _requestDeleteInteraction.Raise(request);
+
+            //DisplayAlert?.Invoke(sender, new DisplayAlertEventArgs
+            //{
+            //    Title = e.Title,
+            //    Message = $"{e.SubTitle}\n{e.Message}",
+            //    AcceptText = "OK"
+            //});
         }
 
         #endregion events 
