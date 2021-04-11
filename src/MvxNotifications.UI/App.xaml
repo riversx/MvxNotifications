@@ -4,13 +4,15 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:d="clr-namespace:MvvmCross.Forms;assembly=MvvmCross.Forms"
-    xmlns:resources="clr-namespace:MvxNotifications.UI.Resources">
+    xmlns:resources="clr-namespace:MvxNotifications.UI.Resources"
+    xmlns:mdifonts="clr-namespace:MvxNotifications.UI.Resources.Fonts">
     <Application.Resources>
 
         <!--  Application resource dictionary  -->
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <resources:Colors />
+                <mdifonts:MaterialDesignIconCodes />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 

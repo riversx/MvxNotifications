@@ -6,6 +6,19 @@ I started this project to learn:
 * How to manage notifications 
 * How to handle ViewModel <-> View interaction
 * How to handle View <-> ViewModel interaction
+* How to use MaterialDesignFont as Icons
+
+## Credits 
+
+[Xamarin](https://dotnet.microsoft.com/apps/xamarin)
+
+[MvvmCross](https://www.mvvmcross.com/)
+
+[James Montamagno - Using Font Icons in Xamarin.Forms: Goodbye Images, Hello Fonts!](https://montemagno.com/using-font-icons-in-xamarin-forms-goodbye-images-hello-fonts/)
+
+[Andrei Nitescu - Icon Font to #Code](https://andreinitescu.github.io/IconFont2Code/)
+
+[Matarial Design Icons](https://materialdesignicons.com/)
 
 ## Project steps 
 
@@ -75,3 +88,72 @@ public abstract class BaseViewModel : MvxViewModel
 _Apr 11th 2021_
 
 Implemented View <-> ViewModel interaction using `IMvxInteraction<YesNoQuestion>`
+
+
+### Using MatarialDesignFont (embedded) as icons
+
+_Apr 11th 2021_
+
+Include `materialdesignicons-webfont.ttf` as embedded resource to use MaterialDesignFonts as icons.
+
+**Add files**
+
+* MxvNotifications.UI\Resources\Fonts\materialdesignicons-webfont.ttf
+* MxvNotifications.UI\Resources\Fonts\MaterialDesignIconCodes.xaml
+* MxvNotifications.UI\Resources\Fonts\MaterialDesignIconCodes.xaml.cs
+
+Add file `AssemblyInfo.cs`
+
+```cs
+using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
+
+[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+[assembly: ExportFont("materialdesignicons-webfont.ttf", Alias = "MaterialDesignIcons")]
+```
+
+Add the following lines to file: `App.xaml`
+
+`xmlns:mdifonts="clr-namespace:MvxNotifications.UI.Resources.Fonts"`
+
+`<mdifonts:MaterialDesignIconCodes />`
+
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<Application
+    x:Class="MvxNotifications.UI.App"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="clr-namespace:MvvmCross.Forms;assembly=MvvmCross.Forms"
+    xmlns:resources="clr-namespace:MvxNotifications.UI.Resources"
+    xmlns:mdifonts="clr-namespace:MvxNotifications.UI.Resources.Fonts">
+    <Application.Resources>
+
+        <!--  Application resource dictionary  -->
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <resources:Colors />
+                <mdifonts:MaterialDesignIconCodes />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+    </Application.Resources>
+</Application>
+```
+
+Xaml example:
+
+```xml
+<Image
+    IsVisible="{Binding IsRead}"
+    HorizontalOptions="Start"
+    VerticalOptions="CenterAndExpand">
+    <Image.Source>
+        <FontImageSource
+            Color="DarkGray"
+            FontFamily="MaterialDesignIcons"
+            Glyph="{StaticResource MDI.EmailOpenOutline}"
+            Size="Default" />
+    </Image.Source>
+</Image>
+```

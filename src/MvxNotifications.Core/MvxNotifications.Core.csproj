@@ -13,7 +13,5 @@
 
   <ItemGroup>
     <Folder Include="Services\" />
-    <Folder Include="Resources\" />
-    <Folder Include="Resources\Fonts\" />
   </ItemGroup>
 </Project>

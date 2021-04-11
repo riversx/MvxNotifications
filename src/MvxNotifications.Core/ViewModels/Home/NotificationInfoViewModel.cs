@@ -9,10 +9,6 @@ namespace MvxNotifications.Core.ViewModels.Home
     {
         public IMvxCommand<NotificationInfoViewModel> DeleteNotificationCommand { get; set; }
 
-        public string EnvelopeClosedIconCode => Resources.Fonts.MaterialDesignIconsCodes.EmailOutline;
-        public string EnvelopeOpenedIconCode => Resources.Fonts.MaterialDesignIconsCodes.EmailOpenOutline;
-        public string DeleteIconCode => Resources.Fonts.MaterialDesignIconsCodes.TrashCanOutline;
-
         public int Id { get; set; }
         public string Title { get; set; }
         public string SubTitle { get; set; }

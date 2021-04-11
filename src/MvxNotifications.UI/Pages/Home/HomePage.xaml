@@ -77,7 +77,7 @@
                                                 <FontImageSource
                                                     Color="Black"
                                                     FontFamily="MaterialDesignIcons"
-                                                    Glyph="{Binding EnvelopeClosedIconCode}"
+                                                    Glyph="{StaticResource MDI.EmailOutline}"
                                                     Size="Default" />
                                             </Image.Source>
                                         </Image>
@@ -89,7 +89,7 @@
                                                 <FontImageSource
                                                     Color="DarkGray"
                                                     FontFamily="MaterialDesignIcons"
-                                                    Glyph="{Binding EnvelopeOpenedIconCode}"
+                                                    Glyph="{StaticResource MDI.EmailOpenOutline}"
                                                     Size="Default" />
                                             </Image.Source>
                                         </Image>
@@ -115,7 +115,7 @@
                                                 <FontImageSource
                                                     Color="DarkRed"
                                                     FontFamily="MaterialDesignIcons"
-                                                    Glyph="{Binding DeleteIconCode}"
+                                                    Glyph="{StaticResource MDI.TrashCanOutline}"
                                                     Size="Default" />
                                             </Image.Source>
                                         </Image>
