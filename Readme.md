@@ -8,6 +8,11 @@ I started this project to learn:
 * How to handle View <-> ViewModel interaction
 * How to use MaterialDesignFont as Icons
 
+## Screenshots 
+
+![iOS Screenshot](screenshots/ios-1.png){:height="50%" width="50%"}
+![Android Screenshot](screenshots/droid-1.png){:height="50%" width="50%"}
+
 ## Credits 
 
 [Xamarin](https://dotnet.microsoft.com/apps/xamarin)
@@ -83,7 +88,7 @@ public abstract class BaseViewModel : MvxViewModel
 }
 ```
 
-### Handles VewModel <-> View inreraction with `IMvxInteraction` 
+### Handles VewModel <-> View inreraction with __IMvxInteraction__
 
 _Apr 11th 2021_
 
