@@ -10,8 +10,8 @@ I started this project to learn:
 
 ## Screenshots 
 
-![iOS Screenshot](screenshots/ios-1.png){:height="50%" width="50%"}
-![Android Screenshot](screenshots/droid-1.png){:height="50%" width="50%"}
+![iOS Screenshot](screenshots/ios-1-home.png)
+![Android Screenshot](screenshots/droid-1-home.png)
 
 ## Credits 
 
