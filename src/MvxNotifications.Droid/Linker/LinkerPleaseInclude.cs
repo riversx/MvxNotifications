@@ -12,8 +12,9 @@ using MvvmCross.Core;
 using MvvmCross.IoC;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
+using MvvmCross.Views;
 
-namespace MvxNotifications.Droid.Linker
+namespace MvxPopup.Droid.Linker
 {
     // This class is never actually executed, but when Xamarin linking is enabled it does how to ensure types and properties
     // are preserved in the deployed app
@@ -93,9 +94,9 @@ namespace MvxNotifications.Droid.Linker
             _ = new MvxViewModelViewTypeFinder(null, null);
         }
 
-        public void Include(MvxNavigationService service, IMvxViewModelLoader loader)
+        public void Include(MvxNavigationService service, IMvxViewModelLoader loader, IMvxViewDispatcher viewDispatcher)
         {
-            _ = new MvxNavigationService(null, loader);
+            _ = new MvxNavigationService(null, viewDispatcher, MvvmCross.Mvx.IoCProvider);
             _ = new MvxAppStart<MvxNullViewModel>(null, null);
         }
 

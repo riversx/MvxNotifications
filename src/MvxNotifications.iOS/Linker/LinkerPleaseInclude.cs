@@ -10,9 +10,10 @@ using MvvmCross.IoC;
 using MvvmCross.Navigation;
 using MvvmCross.Platforms.Ios.Views;
 using MvvmCross.ViewModels;
+using MvvmCross.Views;
 using UIKit;
 
-namespace MvxNotifications.iOS.Linker
+namespace MvxPopup.iOS.Linker
 {
     // This class is never actually executed, but when Xamarin linking is enabled it does ensure types and properties
     // are preserved in the deployed app
@@ -96,6 +97,13 @@ namespace MvxNotifications.iOS.Linker
             s.Pages = s.Pages + 1;
         }
 
+        public void Include(UISearchBar searchBar)
+        {
+            searchBar.Text = $"{ searchBar.Text }";
+            searchBar.TextChanged += (sender, e) => searchBar.Text = "";
+            searchBar.CancelButtonClicked += (s, e) => searchBar.Text = $"{ searchBar.Text }";
+        }
+
         public void Include(INotifyCollectionChanged changed)
         {
             changed.CollectionChanged += (s, e) => { _ = $"{e.Action}{e.NewItems}{e.NewStartingIndex}{e.OldItems}{e.OldStartingIndex}"; };
@@ -129,9 +137,9 @@ namespace MvxNotifications.iOS.Linker
             _ = new MvxAppStart<MvxNullViewModel>(null, null);
         }
 
-        public void Include(MvxNavigationService service, IMvxViewModelLoader loader)
+        public void Include(MvxNavigationService service, IMvxViewModelLoader loader, IMvxViewDispatcher viewDispatcher)
         {
-            _ = new MvxNavigationService(null, loader);
+            _ = new MvxNavigationService(null, viewDispatcher, MvvmCross.Mvx.IoCProvider);
         }
 
         public void Include(ConsoleColor color)
